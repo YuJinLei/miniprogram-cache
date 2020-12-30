@@ -1,5 +1,5 @@
 {
-  "name": "@miniprogram/cache",
+  "name": "cache",
   "version": "1.0.0",
   "description": "一个适用于微信小程序的模块化缓存工具库",
   "main": "dist/index.js",
@@ -8,6 +8,8 @@
   "author": "YuJinLei <1002580998@qq.com>",
   "license": "ISC",
   "keywords": [
+    "@miniprogramjs",
+    "@miniprogramjs-cache",
     "@miniprogram",
     "@miniprogram-cache",
     "miniprogram",
@@ -21,7 +23,8 @@
   },
   "scripts": {
     "dev": "yarn && tsc -w",
-    "build": "rm -rf dist && yarn && tsc"
+    "build": "rm -rf dist && yarn && tsc",
+    "publish": "npm publish --scope=@miniprogramjs"
   },
   "files": [
     "dist",
