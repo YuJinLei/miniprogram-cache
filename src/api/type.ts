@@ -20,7 +20,7 @@ declare type Type = {
   map: (type: MiniCacheType) => MapType<MapTypeValue>
 }
 
-export const miniType: Type = createType()
+export const type: Type = createType()
 
 function createType (): Type {
   return Object.keys(MiniCacheType).reduce((preV, key): any => {
