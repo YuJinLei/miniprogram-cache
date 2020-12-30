@@ -1,7 +1,7 @@
 import { MiniCacheType } from '../constants'
 import { addHiddenProp } from '../utils/utils'
 
-import { Unit } from './unit'
+import { Unit } from '../core/unit'
 
 declare type Property = {
   key: string
@@ -11,9 +11,12 @@ declare type Property = {
 }
 
 declare interface ConnectApi {
-  get: (mapKey?: string) => void
-  set: (mapKey?: string, value?) => void
-  clear: (mapKey?: string) => void
+  get?: () => void
+  set?: (value: any) => void
+  clear?: () => void
+  getMap?: (key: string) => void
+  setMap?: (key: string, value: any) => void
+  clearMap?: (key: string) => void
 }
 
 export const connect = (modelName, context) => {
@@ -30,15 +33,18 @@ export const connect = (modelName, context) => {
     if (!property) continue
     if (!property.isField) continue
 
+    const propertyValue = context[propertyName]
     const { key, expires, storable } = property
-    const type = context[propertyName]
+    let type: MiniCacheType
     let value: ConnectApi
+
+    type = typeof propertyValue === 'object' ? propertyValue.type : propertyValue
 
     if (type === MiniCacheType.map) {
       const mapNodes: Map<string, Unit> = new Map()
       const getUnit = (mapKey: string) => {
         if (!mapNodes.has(mapKey)) {
-          const unit = new Unit({ key: `${modelName}_${key}_${mapKey}`, expires, storable, type })
+          const unit = new Unit({ key: `${modelName}_${key}_${mapKey}`, expires, storable, type: propertyValue.mapType })
           mapNodes.set(mapKey, unit)
           unit.restoreStorage()
         }
@@ -47,7 +53,7 @@ export const connect = (modelName, context) => {
       }
 
       value = {
-        get (mapKey: string) {
+        getMap (mapKey: string) {
           if (!mapKey) {
             return
           }
@@ -60,7 +66,7 @@ export const connect = (modelName, context) => {
 
           return unit.get()
         },
-        set (mapKey: string, mapValue) {
+        setMap (mapKey: string, mapValue) {
           if (!mapKey) {
             return
           }
@@ -69,7 +75,7 @@ export const connect = (modelName, context) => {
 
           unit.set(mapValue)
         },
-        clear (mapKey: string) {
+        clearMap (mapKey: string) {
           if (!mapKey) {
             return
           }
@@ -102,4 +108,6 @@ export const connect = (modelName, context) => {
 
     addHiddenProp(context, propertyName, value)
   }
+
+  return context
 }

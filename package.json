@@ -1,17 +1,34 @@
 {
-  "name": "mini-cache",
+  "name": "@miniprogram/cache",
   "version": "1.0.0",
-  "description": "",
+  "description": "一个适用于微信小程序的模块化缓存工具库",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "YuJinLei <1002580998@qq.com>",
+  "license": "ISC",
+  "keywords": [
+    "@miniprogram",
+    "@miniprogram-cache",
+    "miniprogram",
+    "miniprogram-cache",
+    "mini",
+    "mini-cache",
+    "cache"
+  ],
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "dev": "tsc -w"
+    "dev": "yarn && tsc -w",
+    "build": "rm -rf dist && yarn && tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "dist",
+    "package.json",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "devDependencies": {
     "tslint": "^6.1.3",
     "typescript": "^4.1.3"

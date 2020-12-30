@@ -12,7 +12,7 @@ declare type StorageInfo = {
   value: any
   expires: number
   type: MiniCacheType
-  updateTs: number
+  updatedTs: number
 }
 export class Unit {
   private value
@@ -52,7 +52,13 @@ export class Unit {
     let storageInfo: StorageInfo
 
     try {
-      storageInfo = storage.get(this.key)
+      const info: string = storage.get(this.key)
+
+      if (!info) {
+        return
+      }
+
+      storageInfo = JSON.parse(info)
     } catch (error) {
       storageInfo = null
     }
@@ -104,14 +110,10 @@ export class Unit {
       return
     }
 
-    const { updateTs, value } = storageInfo
-
-    if (!(updateTs && value)) {
-      return
-    }
+    const { updatedTs, value } = storageInfo
 
     this.value = value
-    this.updatedTs = updateTs
+    this.updatedTs = updatedTs
   }
 
   public set (value) {
