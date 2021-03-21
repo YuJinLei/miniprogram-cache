@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "outDir": "dist",
     "noImplicitAny": false,
     "baseUrl": ".",
@@ -12,9 +12,12 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "module": "es6",
+    "module": "commonjs",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": [
+      "ESNext"
+    ]
   },
   "include": ["src"],
   "exclude": ["node_modules"]
