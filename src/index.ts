@@ -3,5 +3,6 @@ export {
   expires,
   field,
   connect,
-  type
+  type,
+  UNIT
 } from './internal'

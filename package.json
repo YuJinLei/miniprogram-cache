@@ -1,6 +1,6 @@
 {
   "name": "@miniprogramjs/cache",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "一个适用于微信小程序的模块化缓存工具库",
   "main": "dist/index.js",
   "module": "dist/index.js",
