@@ -1,6 +1,6 @@
 {
   "name": "@miniprogramjs/cache",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "一个适用于微信小程序的模块化缓存工具库",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -36,7 +36,8 @@
   "scripts": {
     "dev": "yarn && tsc -w",
     "build": "rm -rf dist && yarn && tsc",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "publish": "npm publish --access public"
   },
   "files": [
     "dist",
