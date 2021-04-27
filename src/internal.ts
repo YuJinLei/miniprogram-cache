@@ -1,6 +1,6 @@
 export * from './api/storable'
 export * from './api/expires'
 export * from './api/field'
-export * from './api/type'
+export * as type from './api/type'
 export * from './api/connect'
 export * from './constants'

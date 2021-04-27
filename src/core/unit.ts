@@ -1,32 +1,28 @@
 import * as storage from '../core/storage'
-import { MiniCacheType } from '../constants'
 
-declare type UnitConstructorOption = {
+interface UnitConstructorOption {
   key: string
   storable: boolean
   expires: number
-  type: MiniCacheType
 }
 
-declare type StorageInfo = {
+interface StorageInfo {
   value: any
   expires: number
-  type: MiniCacheType
   updatedTs: number
 }
+
 export class Unit {
   private value
-  private key: string
-  private storable: boolean
-  private expires: number
-  private updatedTs: number
-  private type: MiniCacheType
+  private key!: string
+  private storable!: boolean
+  private expires!: number
+  private updatedTs!: number
 
   constructor (option: UnitConstructorOption) {
     if (!option) throw new Error('the parameters<option> must be specified.')
     if (option.storable === undefined) option.storable = false
     if (!option.expires) option.expires = 1 * 60 * 1000
-    if (!option.type) option.type = MiniCacheType.string
 
     this.init(option)
   }
@@ -40,30 +36,15 @@ export class Unit {
   }
 
   private init (option: UnitConstructorOption) {
-    const { storable, expires, key, type } = option
+    const { storable, expires, key } = option
 
     this.storable = storable
     this.expires = expires
     this.key = key
-    this.type = type
   }
 
   private getStorageInfo (): StorageInfo {
-    let storageInfo: StorageInfo
-
-    try {
-      const info: string = storage.get(this.key)
-
-      if (!info) {
-        return
-      }
-
-      storageInfo = JSON.parse(info)
-    } catch (error) {
-      storageInfo = null
-    }
-
-    return storageInfo
+    return storage.get(this.key)
   }
 
   private getStorageValue () {
@@ -73,34 +54,19 @@ export class Unit {
       return
     }
 
-    try {
-      const storageValue = storageInfo.value
+    const storageValue = storageInfo.value
 
-      if ([null, undefined, NaN].indexOf(storageValue) === -1) {
-        return
-      }
-
-      switch (storageInfo.type) {
-        case MiniCacheType.string:
-          return storageValue.toString()
-        case MiniCacheType.number:
-          return Number(storageValue)
-        case MiniCacheType.boolean:
-          return Boolean(storageValue)
-        case MiniCacheType.array:
-        case MiniCacheType.object:
-          return JSON.parse(storageValue)
-      }
-    } catch (error) {
+    if ([null, undefined, NaN].indexOf(storageValue) === -1) {
       return
     }
+
+    return storageValue
   }
 
-  private createStorageInfo (): string {
-    const { updatedTs, expires, value, type } = this
-    const writeData = JSON.stringify({ updatedTs, expires, value, type })
+  private createStorageInfo () {
+    const { updatedTs, expires, value } = this
 
-    return writeData
+    return { updatedTs, expires, value }
   }
 
   public restoreStorage () {
@@ -131,6 +97,8 @@ export class Unit {
   public get () {
     const { storable, value } = this
 
+    if (typeof value === 'boolean' && [true, false].includes(value)) return value
+
     if (value) return value
     if (!storable) return
 
@@ -139,7 +107,7 @@ export class Unit {
 
   public clear () {
     this.value = null
-    this.updatedTs = null
+    this.updatedTs = 0
 
     storage.remove(this.key)
   }

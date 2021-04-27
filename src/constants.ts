@@ -1,13 +1,3 @@
-export enum MiniCacheType {
-  none = 0,
-  string,
-  number,
-  boolean,
-  array,
-  map,
-  object
-}
-
 const SECOND = 1000
 const MIN = 60 * SECOND
 const HOUR = 60 * MIN

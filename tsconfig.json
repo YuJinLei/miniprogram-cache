@@ -17,8 +17,13 @@
     "sourceMap": true,
     "lib": [
       "ESNext"
-    ]
+    ],
+    "types": [
+      "jest",
+      "wechat-miniprogram"
+    ],
+    "strict": true
   },
-  "include": ["src"],
+  "include": ["src", "__test__"],
   "exclude": ["node_modules"]
 }
